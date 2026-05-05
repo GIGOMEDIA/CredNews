@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { newsErrorMessage, newsService } from '@/services/newsService';
+import { newsService } from '@/services/newsService';
 import { queryKeys } from '@/services/queryClient';
 import { ArticleCollection, NewsCategory } from '@/types/article';
 
@@ -40,5 +40,3 @@ export function useSearchQuery(query: string) {
     gcTime: FIFTEEN_MINUTES * 4,
   });
 }
-
-export { newsErrorMessage };

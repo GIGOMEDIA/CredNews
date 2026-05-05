@@ -1,85 +1,214 @@
-# CredNews
+# CredNews 📰
 
-CredNews is a mobile-first Expo news application built for the HNG Mobile Stage 3 task. It consumes live news APIs, supports personalized feeds, article search, saved articles, local tech events, AI-assisted article summaries/Q&A, and community fact-checking with Firebase-backed comments and evidence.
+**CredNews** is a mobile-first news application built with Expo for the **HNG Mobile Stage 3 Task**.
+It delivers real-time news, personalized feeds, local tech events, AI-powered summaries, and community-driven fact-checking in a fast, editorial-style interface.
 
-## App Built
+---
+
+# 📱 App Built
 
 **Option B: News App**
 
-CredNews focuses on fast, readable news discovery with a dark editorial interface inspired by a newsroom/live-wire visual style.
+CredNews focuses on fast, readable news discovery with a **modern newsroom-inspired interface**, optimized for performance, usability, and reliability.
 
-## Features
+---
 
-- **Live news feed** with category browsing for Top Stories, Business, Technology, World, Sports, and Health.
-- **Nigeria-first news configuration** using GNews country/language settings from `.env`.
-- **Personalized interests** through a modal where users select categories, topics, geography, and custom interests.
-- **Pull-to-refresh** on the main feed with skeleton loading.
-- **Smooth list rendering** with `FlashList`.
-- **Article search** with real-time keyword search, loading states, empty states, and bookmark support.
-- **Article details screen** with source link, sharing, bookmarking, AI brief, AI Q&A, supporting evidence, and community comments.
-- **Saved articles** page backed by local storage for offline reading.
-- **Tech events screen** for Lagos/Nigeria/Africa-focused event discovery with city filters, date/type filters, device location lookup, and GNews fallback.
-- **Firebase authentication** for comment, evidence, and AI Q&A gated flows.
-- **Community fact-checking** with comments, FACT/FAKE tags, and real/fake voting.
-- **Supporting evidence** with link, note, and image submissions.
-- **Offline-friendly pending actions** for comments, votes, and evidence when connectivity fails.
-- **Gemini AI integration** for 60-second article briefs and article-grounded Q&A.
-- **Global Inter font setup** through Expo fonts.
-- **Responsive scaling helpers** in `src/utils/scaling.ts`.
-- **Animated screen transitions** through Expo Router stack options.
-- **Animated list/card entrances** and skeleton loaders.
+# ✨ Core Features
 
-## APIs Used
+## 📰 News Feed
 
-- [GNews API](https://gnews.io/) for news headlines and search.
-- [PredictHQ API](https://www.predicthq.com/) for structured event discovery when configured.
-- [Google Gemini API](https://ai.google.dev/) for AI summaries and article Q&A.
-- [Firebase Authentication](https://firebase.google.com/products/auth) for account/session support.
-- [Cloud Firestore](https://firebase.google.com/products/firestore) for comments, votes, and evidence metadata.
-- [Firebase Storage](https://firebase.google.com/products/storage) for image evidence uploads.
+- Live news feed powered by **GNews API**
+- Category browsing:
+  - Top Stories
+  - Business
+  - Technology
+  - World
+  - Sports
+  - Health
 
-## Animation Highlights
+- Nigeria-first configuration using `.env` settings
+- Pull-to-refresh with animated skeleton loading
+- Smooth rendering using **FlashList**
 
-- **Screen transitions:** Expo Router stack screens use fade, slide-from-right, and slide-from-bottom transitions.
-- **Feed/list item animation:** feed cards, search results, and saved articles animate into view with opacity and vertical translation.
-- **Skeleton loading:** feed and search states show animated loading placeholders.
-- **Interactive UI states:** bookmark, auth-gated actions, AI loading, evidence upload, and comment submission provide visible state changes.
+---
 
-## Architecture
+## 🎯 Personalization
+
+- Custom interest selection modal
+- Supports:
+  - Categories
+  - Topics
+  - Geographic regions
+  - Custom keywords
+
+- Personalized news feed experience
+
+---
+
+## 🔍 Search
+
+- Real-time keyword-based article search
+- Loading and empty states
+- Bookmark support directly from search results
+
+---
+
+## 📄 Article Details
+
+Each article includes:
+
+- Full article preview
+- External source link
+- Bookmarking
+- Sharing support
+- AI-generated summary
+- AI-powered Q&A
+- Supporting evidence section
+- Community comments
+
+---
+
+## ⭐ Saved Articles
+
+- Bookmark articles for later reading
+- Offline-friendly storage using AsyncStorage
+
+---
+
+## 📍 Tech Events
+
+- Discover local tech events
+- Filters:
+  - City
+  - Date
+  - Event type
+
+- Device location support
+- Fallback event discovery using GNews
+
+---
+
+## 🤖 AI Features
+
+Powered by **Google Gemini**:
+
+- 60-second article summaries
+- Article-based Q&A system
+- Context-aware responses
+- Auth-gated access for controlled usage
+
+---
+
+## 🧠 Community Fact-Checking
+
+Users can:
+
+- Add comments
+- Tag claims as:
+  - FACT
+  - FAKE
+
+- Vote on claims
+- Submit supporting evidence
+- Upload images as verification proof
+
+---
+
+## 🔐 Authentication
+
+Implemented using **Firebase Authentication**:
+
+- Email/password login
+- Secure user sessions
+- Protected actions (comments, AI, evidence)
+
+---
+
+## 📡 Offline Support
+
+Designed to remain usable without internet:
+
+- Cached news responses
+- Saved articles stored locally
+- Offline queue for:
+  - Comments
+  - Votes
+  - Evidence uploads
+
+- Automatic retry on reconnection
+
+---
+
+# 🎨 Animation Highlights
+
+- Smooth screen transitions using Expo Router
+- Animated feed cards
+- Skeleton loading states
+- Interactive feedback animations
+- Bookmark and upload state transitions
+
+---
+
+# 🏗️ Project Architecture
 
 ```text
 src/
-  api/          API clients for GNews, PredictHQ, Gemini, Firestore, and Storage
-  app/          Expo Router screens, tabs, modals, auth, and article routes
-  assets/       Icons and visual assets
-  components/   Reusable UI: headers, cards, chips, AI/community/evidence panels
-  config/       Firebase, Firestore, and Storage setup
-  hooks/        App-level hooks such as auth/network wrappers
-  services/     Business logic, caching, API orchestration, pending actions
-  types/        TypeScript domain models
-  utils/        Env parsing, scaling, typography, date, navigation, async helpers
+  api/          API clients (GNews, PredictHQ, Gemini, Firebase)
+  app/          Expo Router screens and navigation
+  assets/       Icons and images
+  components/   Reusable UI components
+  config/       Firebase and service configuration
+  hooks/        Custom React hooks
+  services/     Business logic and caching
+  types/        TypeScript models
+  utils/        Helper utilities
 ```
 
-The app keeps API access in `src/api`, business workflows in `src/services`, and reusable presentation components in `src/components`.
+This architecture separates **API logic**, **UI**, and **business workflows** for scalability and maintainability.
 
-## Important Libraries
+---
 
-- `expo` and `expo-router`
-- `@shopify/flash-list`
-- `@react-native-async-storage/async-storage`
-- `firebase`
-- `rn-swiftauth-sdk`
-- `expo-image`
-- `expo-image-picker`
-- `expo-location`
-- `expo-network`
-- `expo-web-browser`
-- `@expo-google-fonts/inter`
-- `react-native-keyboard-controller`
+# 🧰 Technologies & Libraries
 
-## Environment Variables
+- Expo
+- Expo Router
+- Firebase
+- FlashList
+- AsyncStorage
+- Expo Location
+- Expo Image Picker
+- Expo Network
+- Expo Web Browser
+- Google Gemini API
+- React Native Keyboard Controller
+- Expo Fonts (Inter)
 
-Create a `.env` file from `.env.example`:
+---
+
+# 🌐 APIs Used
+
+- **GNews API** — news headlines and search
+- **PredictHQ API** — structured tech event discovery
+- **Google Gemini API** — AI summaries and Q&A
+- **Firebase Authentication** — user login
+- **Cloud Firestore** — comments and voting
+- **Firebase Storage** — evidence image uploads
+
+---
+
+# 🔑 Environment Variables
+
+Create `.env` from `.env.example` and restart Expo:
+
+```bash
+cp .env.example .env
+# or on Windows PowerShell:
+# copy .env.example .env
+```
+
+Then run the app with `expo start`.
+
+Example `.env`:
 
 ```env
 EXPO_PUBLIC_NEWS_API_BASE_URL=https://gnews.io/api/v4
@@ -103,65 +232,28 @@ EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
 ```
 
-Do not commit real API keys in public repositories.
+⚠️ Never commit real API keys to public repositories.
 
-## Firebase Setup
+---
 
-Enable these Firebase products:
+# 🔥 Firebase Setup
 
-- Authentication with Email/Password provider
+Enable:
+
+- Authentication (Email/Password)
 - Cloud Firestore
 - Firebase Storage
 
-Recommended development Firestore rules:
+Used for:
 
-```js
-rules_version = '2';
+- Comments
+- Voting
+- Supporting evidence
+- User sessions
 
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /articles/{articleId}/comments/{commentId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if false;
+---
 
-      match /voters/{uid} {
-        allow read, write: if request.auth != null && request.auth.uid == uid;
-      }
-    }
-
-    match /articles/{articleId}/evidence/{evidenceId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow delete: if request.auth != null && resource.data.authorUid == request.auth.uid;
-      allow update: if false;
-    }
-
-    match /users/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
-    }
-  }
-}
-```
-
-Recommended development Storage rules:
-
-```js
-rules_version = '2';
-
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /evidence/{articleId}/{uid}/{fileName} {
-      allow read: if true;
-      allow create: if request.auth != null && request.auth.uid == uid;
-      allow delete: if request.auth != null && request.auth.uid == uid;
-      allow update: if false;
-    }
-  }
-}
-```
-
-## Getting Started
+# 🚀 Getting Started
 
 Install dependencies:
 
@@ -187,7 +279,7 @@ Run iOS:
 pnpm ios
 ```
 
-Run lint:
+Lint project:
 
 ```bash
 pnpm lint
@@ -199,28 +291,35 @@ Run TypeScript checks:
 pnpm exec tsc --noEmit
 ```
 
-## Screens Implemented
+---
 
-- Feeds
+# 📱 Screens Implemented
+
+- News Feed
 - Events
 - Search
 - Saved Articles
 - Article Details
-- Personalize Interests modal
+- Personalization Modal
 - Sign In
 - Sign Up
 
-## Offline Caching and Error Handling
+---
 
-- News responses are cached with AsyncStorage.
-- Saved articles are stored locally.
-- Comments, votes, and evidence actions can be queued for retry.
-- Network state is checked with `expo-network`.
-- User-facing retry/error messages are shown for API failures, rate limits, offline states, denied permissions, and failed cloud sync.
+# 🧪 Offline Caching & Error Handling
 
-## Screenshots / Recordings
+- Cached news responses
+- Local saved articles
+- Offline retry queue
+- Network-aware behavior
+- Graceful error messages
+- Permission handling
 
-Add your screenshots or GIFs here before submission:
+---
+
+# 📸 Screenshots / Recordings
+
+Add screenshots before submission:
 
 ```text
 docs/screenshots/feed.png
@@ -230,11 +329,20 @@ docs/screenshots/saved.png
 docs/screenshots/events.png
 ```
 
-## Submission Notes
+---
+
+# 📦 Submission Checklist
 
 For HNG submission, include:
 
+- APK file
 - Appetize preview link
 - GitHub repository link
-- LinkedIn/X/Medium documentation post link
-- Screenshots or a screen recording/GIF
+- Documentation post (LinkedIn / Medium / X)
+- Screenshots or screen recording
+
+---
+
+# 🏁 Summary
+
+CredNews demonstrates a **production-ready mobile architecture**, combining **real-time APIs**, **AI-powered features**, **offline reliability**, and **community verification workflows** into a scalable mobile news platform.

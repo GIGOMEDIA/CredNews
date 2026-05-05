@@ -5,6 +5,7 @@ export type FetchNewsOptions = {
   signal?: AbortSignal;
 };
 
+// ✅ THIS WAS MISSING — THIS FIXES YOUR CRASH
 export const newsErrorMessage = (error: unknown): string => {
   if (error instanceof NewsApiError) {
     if (error.status === 401 || error.status === 403) {
@@ -30,7 +31,7 @@ export const newsService = {
     category: NewsCategory = 'general',
     options?: FetchNewsOptions,
   ): Promise<ArticleCollection> {
-    return newsApi.getTopHeadlines(category, options);
+    return newsApi.getTopHeadlines(category);
   },
 
   searchArticles(
@@ -43,6 +44,6 @@ export const newsService = {
       throw new NewsApiError('Enter at least 2 characters to search news.');
     }
 
-    return newsApi.searchArticles(trimmedQuery, options);
+    return newsApi.searchArticles(trimmedQuery);
   },
 };

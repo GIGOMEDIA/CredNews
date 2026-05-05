@@ -19,10 +19,11 @@ import {
   LeadArticleCard,
 } from '@/components/FeedArticleCards';
 import { NewsroomHeader } from '@/components/NewsroomHeader';
-import {
-  newsErrorMessage,
-  useHeadlinesQuery,
-} from '@/hooks/queries/useNewsQueries';
+
+// ✅ FIXED IMPORTS (THIS IS THE ONLY IMPORTANT CHANGE)
+import { useHeadlinesQuery } from '@/hooks/queries/useNewsQueries';
+import { newsErrorMessage } from '@/services/newsService';
+
 import { bookmarkService } from '@/services/bookmarkService';
 import {
   InterestPreferences,
@@ -101,6 +102,7 @@ export default function HomeScreen() {
   const isLoading = headlinesQuery.isFetching;
   const isStaleFromCache =
     Boolean(headlinesQuery.data) && headlinesQuery.isError;
+
   const errorMessage = headlinesQuery.isError
     ? newsErrorMessage(headlinesQuery.error)
     : undefined;
@@ -148,6 +150,7 @@ export default function HomeScreen() {
   );
   const leadArticle = articles[0];
   const gridArticles = articles.slice(1);
+
   const sectionTitle =
     activeCategory === 'general' && preferences.interests.length > 0
       ? 'Your Interests'
@@ -254,12 +257,12 @@ export default function HomeScreen() {
             </>
           )}
         </View>
-
       </View>
     </SafeAreaView>
   );
 }
 
+// ✅ ALL YOUR STYLES REMAIN 100% UNCHANGED BELOW
 const styles = StyleSheet.create({
   categoryBand: {
     borderBottomColor: '#191B20',

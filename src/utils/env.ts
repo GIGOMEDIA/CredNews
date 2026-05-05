@@ -1,97 +1,122 @@
-export type NewsEnvironment = {
-  apiBaseUrl: string;
-  apiKey: string;
-  cerebrasApiBaseUrl: string;
-  cerebrasApiKey: string;
-  cerebrasModel: string;
-  defaultCountry: string;
-  defaultLanguage: string;
-  eventsApiBaseUrl: string;
-  firebaseApiKey: string;
-  firebaseAppId: string;
-  firebaseAuthDomain: string;
-  firebaseMessagingSenderId: string;
-  firebaseProjectId: string;
-  firebaseStorageBucket: string;
-  geminiApiBaseUrl: string;
-  geminiApiKey: string;
-  geminiModel: string;
-  groqApiBaseUrl: string;
-  groqApiKey: string;
-  groqModel: string;
-  maxResults: number;
-  openrouterApiBaseUrl: string;
-  openrouterApiKey: string;
-  openrouterModel: string;
-  predicthqApiKey: string;
+import Constants from "expo-constants";
+
+type Extra = Record<string, string | undefined>;
+
+const extra: Extra =
+  (Constants.expoConfig?.extra as Extra) ??
+  ((Constants.manifest as any)?.extra as Extra) ??
+  {};
+
+// Get env from Expo config OR process.env
+const getEnv = (key: string): string | undefined => {
+  if (extra?.[key]) return extra[key];
+  if (process.env?.[key]) return process.env[key];
+  return undefined;
 };
 
-const required = (value: string | undefined, name: string) => {
-  if (!value) {
+// Throw error if missing (prevents silent bugs)
+const required = (value: string | undefined, name: string): string => {
+  if (!value || value.trim() === "") {
+    console.error(`❌ Missing ENV: ${name}`);
     throw new Error(`Missing environment variable: ${name}`);
   }
-
   return value;
 };
 
-const toPositiveInteger = (
-  value: string | undefined,
-  fallback: number,
-): number => {
-  const parsed = Number(value);
+export const env = {
+  // ======================
+  // 📰 NEWS API (REQUIRED)
+  // ======================
+  apiBaseUrl:
+    getEnv("EXPO_PUBLIC_NEWS_API_BASE_URL") ??
+    "https://gnews.io/api/v4",
 
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return fallback;
-  }
-
-  return Math.floor(parsed);
-};
-
-export const env: NewsEnvironment = {
-  apiBaseUrl: required(
-    process.env.EXPO_PUBLIC_NEWS_API_BASE_URL,
-    'EXPO_PUBLIC_NEWS_API_BASE_URL',
+  apiKey: required(
+    getEnv("EXPO_PUBLIC_NEWS_API_KEY"),
+    "EXPO_PUBLIC_NEWS_API_KEY"
   ),
-  apiKey: process.env.EXPO_PUBLIC_NEWS_API_KEY ?? '',
-  cerebrasApiBaseUrl:
-    process.env.EXPO_PUBLIC_CEREBRAS_API_BASE_URL ??
-    'https://api.cerebras.ai/v1',
-  cerebrasApiKey: process.env.EXPO_PUBLIC_CEREBRAS_API_KEY ?? '',
-  cerebrasModel:
-    process.env.EXPO_PUBLIC_CEREBRAS_MODEL ?? 'llama-3.3-70b',
-  defaultCountry: process.env.EXPO_PUBLIC_NEWS_DEFAULT_COUNTRY ?? 'ng',
-  defaultLanguage: process.env.EXPO_PUBLIC_NEWS_DEFAULT_LANGUAGE ?? 'en',
+
+  defaultCountry:
+    getEnv("EXPO_PUBLIC_NEWS_DEFAULT_COUNTRY") ?? "ng",
+
+  defaultLanguage:
+    getEnv("EXPO_PUBLIC_NEWS_DEFAULT_LANGUAGE") ?? "en",
+
+  maxResults: Number(
+    getEnv("EXPO_PUBLIC_NEWS_MAX_RESULTS") ?? "20"
+  ),
+
+  // ======================
+  // 🔥 FIREBASE (REQUIRED)
+  // ======================
+  firebaseApiKey: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_API_KEY"),
+    "EXPO_PUBLIC_FIREBASE_API_KEY"
+  ),
+
+  firebaseAuthDomain: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN"),
+    "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN"
+  ),
+
+  firebaseProjectId: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_PROJECT_ID"),
+    "EXPO_PUBLIC_FIREBASE_PROJECT_ID"
+  ),
+
+  firebaseStorageBucket: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET"),
+    "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET"
+  ),
+
+  firebaseMessagingSenderId: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"),
+    "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"
+  ),
+
+  firebaseAppId: required(
+    getEnv("EXPO_PUBLIC_FIREBASE_APP_ID"),
+    "EXPO_PUBLIC_FIREBASE_APP_ID"
+  ),
+
+  // ======================
+  // 📅 EVENTS (OPTIONAL)
+  // ======================
   eventsApiBaseUrl:
-    process.env.EXPO_PUBLIC_EVENTS_API_BASE_URL ??
-    'https://api.predicthq.com/v1',
-  firebaseApiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY ?? '',
-  firebaseAppId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID ?? '',
-  firebaseAuthDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '',
-  firebaseMessagingSenderId:
-    process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '',
-  firebaseProjectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID ?? '',
-  firebaseStorageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET ?? '',
+    getEnv("EXPO_PUBLIC_EVENTS_API_BASE_URL") ??
+    "https://api.predicthq.com/v1",
+
+  predicthqApiKey:
+    getEnv("EXPO_PUBLIC_PREDICTHQ_API_KEY") ?? "",
+
+  // ======================
+  // 🤖 AI PROVIDERS (OPTIONAL)
+  // ======================
   geminiApiBaseUrl:
-    process.env.EXPO_PUBLIC_GEMINI_API_BASE_URL ??
-    'https://generativelanguage.googleapis.com/v1beta',
-  geminiApiKey: process.env.EXPO_PUBLIC_GEMINI_API_KEY ?? '',
-  geminiModel: process.env.EXPO_PUBLIC_GEMINI_MODEL ?? 'gemini-2.5-flash',
+    getEnv("EXPO_PUBLIC_GEMINI_API_BASE_URL") ?? "",
+  geminiApiKey:
+    getEnv("EXPO_PUBLIC_GEMINI_API_KEY") ?? "",
+  geminiModel:
+    getEnv("EXPO_PUBLIC_GEMINI_MODEL") ?? "",
+
   groqApiBaseUrl:
-    process.env.EXPO_PUBLIC_GROQ_API_BASE_URL ??
-    'https://api.groq.com/openai/v1',
-  groqApiKey: process.env.EXPO_PUBLIC_GROQ_API_KEY ?? '',
+    getEnv("EXPO_PUBLIC_GROQ_API_BASE_URL") ?? "",
+  groqApiKey:
+    getEnv("EXPO_PUBLIC_GROQ_API_KEY") ?? "",
   groqModel:
-    process.env.EXPO_PUBLIC_GROQ_MODEL ?? 'llama-3.1-8b-instant',
-  maxResults: toPositiveInteger(
-    process.env.EXPO_PUBLIC_NEWS_MAX_RESULTS,
-    20,
-  ),
+    getEnv("EXPO_PUBLIC_GROQ_MODEL") ?? "",
+
+  cerebrasApiBaseUrl:
+    getEnv("EXPO_PUBLIC_CEREBRAS_API_BASE_URL") ?? "",
+  cerebrasApiKey:
+    getEnv("EXPO_PUBLIC_CEREBRAS_API_KEY") ?? "",
+  cerebrasModel:
+    getEnv("EXPO_PUBLIC_CEREBRAS_MODEL") ?? "",
+
   openrouterApiBaseUrl:
-    process.env.EXPO_PUBLIC_OPENROUTER_API_BASE_URL ??
-    'https://openrouter.ai/api/v1',
-  openrouterApiKey: process.env.EXPO_PUBLIC_OPENROUTER_API_KEY ?? '',
+    getEnv("EXPO_PUBLIC_OPENROUTER_API_BASE_URL") ?? "",
+  openrouterApiKey:
+    getEnv("EXPO_PUBLIC_OPENROUTER_API_KEY") ?? "",
   openrouterModel:
-    process.env.EXPO_PUBLIC_OPENROUTER_MODEL ??
-    'meta-llama/llama-3.1-8b-instruct:free',
-  predicthqApiKey: process.env.EXPO_PUBLIC_PREDICTHQ_API_KEY ?? '',
+    getEnv("EXPO_PUBLIC_OPENROUTER_MODEL") ?? "",
 };
